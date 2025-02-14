@@ -13,7 +13,7 @@ class Game:
         self.running = True
 
         # Load balls
-        self.ball1 = Ball(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2, "C:/Users/Admin/BrainBallGame/Resources/TestAvartar/pop_cat.png", RED, {
+        self.ball1 = Ball(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2, "pop_cat.png", RED, {
             'left': pygame.K_a, 'right': pygame.K_d,
             'up': pygame.K_w, 'down': pygame.K_s
         })
@@ -26,9 +26,11 @@ class Game:
         self.eegDevice = EEGDevice(port)
         print(f"Starting game with {self.eegDevice.ser.port}...")
         while self.running:
+            
             self.handle_events()
             self.update()
             self.draw()
+            #self.eegDevice.fetch_data()
             self.clock.tick(60)
 
         pygame.quit()
@@ -43,6 +45,11 @@ class Game:
         self.ball1.move(keys)
         self.ball2.move(keys)
 
+        self.ball1.use_skill(keys)
+        #self.ball2.use_skill(keys)
+        
+        self.ball1.GetSkillHolder().regenerate_mana()
+        #self.ball2.GetSkillHolder().regenerate_mana()
         # Check for collision between the two balls
         self.ball1.check_collision(self.ball2)
 
