@@ -48,7 +48,7 @@ class SkillHolder:
             self.current_mana = min(self.current_mana + regenerated_mana, self.maximum_mana)
             self.last_mana_update = current_time  # Update last regen time1111
             
-            print(f"Mana Regenerated: {self.current_mana - old_mana:.2f} | Current Mana: {self.current_mana:.2f}/{self.maximum_mana}")
+            #print(f"Mana Regenerated: {self.current_mana - old_mana:.2f} | Current Mana: {self.current_mana:.2f}/{self.maximum_mana}")
 
 
     def get_mana_info(self):

@@ -3,6 +3,7 @@ import os
 from Ball import Ball
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, RED,BLUE
 from EEG import EEGDevice
+from SkillEventManager import SkillEventManager
 
 class Game:
     def __init__(self):
@@ -15,11 +16,13 @@ class Game:
         # Load balls
         self.ball1 = Ball(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2, "pop_cat.png", RED, {
             'left': pygame.K_a, 'right': pygame.K_d,
-            'up': pygame.K_w, 'down': pygame.K_s
+            'up': pygame.K_w, 'down': pygame.K_s,
+            'Skill_1':pygame.K_1,'Skill_2':pygame.K_2,'Skill_1':pygame.K_3
         })
         self.ball2 = Ball(2 * SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2, "brainball2.png", BLUE, {
             'left': pygame.K_LEFT, 'right': pygame.K_RIGHT,
-            'up': pygame.K_UP, 'down': pygame.K_DOWN
+            'up': pygame.K_UP, 'down': pygame.K_DOWN,
+            'Skill_1':pygame.K_KP1,'Skill_2':pygame.K_KP2,'Skill_1':pygame.K_KP3
         })
 
     def run(self,port):
@@ -40,16 +43,17 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
 
+                
     def update(self):
         keys = pygame.key.get_pressed()
         self.ball1.move(keys)
         self.ball2.move(keys)
 
         self.ball1.use_skill(keys)
-        #self.ball2.use_skill(keys)
+        self.ball2.use_skill(keys)
         
         self.ball1.GetSkillHolder().regenerate_mana()
-        #self.ball2.GetSkillHolder().regenerate_mana()
+        self.ball2.GetSkillHolder().regenerate_mana()
         # Check for collision between the two balls
         self.ball1.check_collision(self.ball2)
 

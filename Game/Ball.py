@@ -63,10 +63,11 @@ class Ball:
     
     def use_skill(self, keys):
         """Use the skill based on the pressed key dynamically."""
-        skill_keys = [pygame.K_1, pygame.K_2, pygame.K_3]
-        skill_names = list(self.skillHolder.skills.keys())  # Get skill names dynamically
+        skill_names = list(self.skillHolder.skills.keys())  # Get available skills dynamically
 
-        for i, key in enumerate(skill_keys):
-            if keys[key] and i < len(skill_names):
-                self.mana = self.skillHolder.use_skill(skill_names[i])
-                
+        for i in range(1, 4):  # Skill_1, Skill_2, Skill_3
+            skill_key = self.controls.get(f'Skill_{i}')  # Get key assigned to the skill
+            
+            # Corrected the way to check key states
+            if skill_key and keys[skill_key] and (i - 1) < len(skill_names):
+                self.mana = self.skillHolder.use_skill(skill_names[i - 1])  # Use skill
