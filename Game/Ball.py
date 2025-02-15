@@ -42,7 +42,15 @@ class Ball:
 
         self.rect.move_ip(self.velocity)
         
-    
+    def move_based_on_focus(self, meditation_value, attention_value,reverse_movement:bool):
+        if meditation_value > attention_value:
+            direction = -1 if reverse_movement else 1
+            self.velocity[0] = BALL_SPEED * direction
+        else:
+            self.velocity[0] = 0  # Stop moving if attention is higher
+
+        self.rect.move_ip(self.velocity)
+        
 
     def draw(self, screen):
         if self.image:

@@ -72,3 +72,4 @@ class Skill:
     def activate(self, target):
         """Abstract method that must be implemented in subclasses."""
         pass  # This must be overridden in child classes
+        

@@ -13,6 +13,9 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
+        # Load font
+        self.font = pygame.font.Font(None, 36)  # Default pygame font, size 36
+        
         # Load balls
         self.ball1 = Ball(SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2, "pop_cat.png", RED, {
             'left': pygame.K_a, 'right': pygame.K_d,
@@ -33,7 +36,7 @@ class Game:
             self.handle_events()
             self.update()
             self.draw()
-            #self.eegDevice.fetch_data()
+            self.eegDevice.fetch_data()
             self.clock.tick(60)
 
         pygame.quit()
@@ -46,7 +49,7 @@ class Game:
                 
     def update(self):
         keys = pygame.key.get_pressed()
-        self.ball1.move(keys)
+        self.ball1.move_based_on_focus(self.eegDevice.avg_meditation,self.eegDevice.avg_attention,False)
         self.ball2.move(keys)
 
         self.ball1.use_skill(keys)
@@ -61,6 +64,12 @@ class Game:
         self.screen.fill(WHITE)
         self.ball1.draw(self.screen)
         self.ball2.draw(self.screen)
+        # Render EEG Text
+        meditation_text = self.font.render(f"Meditation: {self.eegDevice.avg_meditation}", True, (0, 0, 0))
+        attention_text = self.font.render(f"Attention: {self.eegDevice.avg_attention}", True, (0, 0, 0))
+                # Blit the text to the screen
+        self.screen.blit(meditation_text, (20, 20))
+        self.screen.blit(attention_text, (20, 60))
         pygame.display.flip()
 
 if __name__ == "__main__":
