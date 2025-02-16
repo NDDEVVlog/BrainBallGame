@@ -5,13 +5,16 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, RED,BLUE
 from EEG import EEGDevice
 from SkillEventManager import SkillEventManager
 
-class Game:
-    def __init__(self):
+class Scene_Game:
+    def __init__(self,scene_manager):
+        print("GameInit")
+        self.eegDevice = None
+        self.scene_manager = scene_manager
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Brainball Collision Game")
         self.clock = pygame.time.Clock()
-        self.running = True
+        self.running = False
 
         # Load font
         self.font = pygame.font.Font(None, 36)  # Default pygame font, size 36
@@ -28,28 +31,43 @@ class Game:
             'Skill_1':pygame.K_KP1,'Skill_2':pygame.K_KP2,'Skill_1':pygame.K_KP3
         })
 
-    def run(self,port):
-        self.eegDevice = EEGDevice(port)
-        print(f"Starting game with {self.eegDevice.ser.port}...")
-        while self.running:
-            
-            self.handle_events()
-            self.update()
-            self.draw()
-            self.eegDevice.fetch_data()
-            self.clock.tick(60)
+    def ConnectEEGDEVICE(self,port):
+        
+        if self.eegDevice is None:
+            self.eegDevice = EEGDevice(port)
 
-        pygame.quit()
+    
+    
+    
+    def run(self):
+        
+        #print(f"Starting game with {self.eegDevice.ser.port}...")
+        #while self.running:
+            
+        self.handle_events()
+        self.update()
+        self.draw()
+        self.eegDevice.fetch_data()
+        self.clock.tick(60)
+
+
 
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+                self.scene_manager.switch_scene("Menu")  # Switch back to menu
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.running = False
+                    self.scene_manager.switch_scene("Menu")  # Exit to menu when ESC is pressed
 
                 
     def update(self):
         keys = pygame.key.get_pressed()
-        self.ball1.move_based_on_focus(self.eegDevice.avg_meditation,self.eegDevice.avg_attention,False)
+        #self.ball1.move_based_on_focus(self.eegDevice.avg_meditation,self.eegDevice.avg_attention,False)
+        self.ball1.move(keys)
         self.ball2.move(keys)
 
         self.ball1.use_skill(keys)
@@ -71,7 +89,3 @@ class Game:
         self.screen.blit(meditation_text, (20, 20))
         self.screen.blit(attention_text, (20, 60))
         pygame.display.flip()
-
-if __name__ == "__main__":
-    game = Game()
-    game.run()

@@ -63,7 +63,9 @@ class Skill:
         if remaining_time > 0:
             cooldown_text = font.render(f"{self.name}: {remaining_time}s", True, (255, 0, 0))
             screen.blit(cooldown_text, (x, y))
-            
+
+    
+    
     @abstractmethod
     def CoolDownComplete(self,target):
         pass

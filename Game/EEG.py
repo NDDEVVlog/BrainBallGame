@@ -21,8 +21,8 @@ class EEGDevice:
             self.avg_attention=0
             self.avg_meditation=0
                     # New: Store last 5 seconds (20 updates)
-            self.attention_history = deque(maxlen=512*2)
-            self.meditation_history = deque(maxlen=512*2)
+            self.attention_history = deque(maxlen=64)
+            self.meditation_history = deque(maxlen=64)
             # Print initialization details
             print(f"EEG Device Initialized on {port} with baud rate {baudrate}")
             print(f"Serial Connection Open: {self.ser.is_open}")
@@ -148,7 +148,7 @@ class EEGDevice:
 
             if (delta_power + theta_power) > 0:
                 self.attention_value = int((beta_power / (delta_power + theta_power)) * 100)
-                self.meditation_value = int((alpha_power / (delta_power + theta_power)) * 100)
+                self.meditation_value = int((alpha_power+theta_power) / beta_power  ) * 100
 
             # Store values in history for 5-second averaging
             self.attention_history.append(self.attention_value)
