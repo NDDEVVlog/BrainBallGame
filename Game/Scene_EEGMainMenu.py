@@ -1,7 +1,7 @@
 import pygame
 import sys
 import serial.tools.list_ports
-from Game import Game  # Import the Brainball game
+from Scene_Game import Scene_Game  # Import the Brainball game
 from SceneManager import SceneManager
 
 # Initialize pygame

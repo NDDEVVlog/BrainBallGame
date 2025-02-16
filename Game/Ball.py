@@ -2,7 +2,7 @@ import pygame
 import os
 from constants import BALL_RADIUS, BALL_SPEED, SCREEN_WIDTH, SCREEN_HEIGHT, RED
 from SkillHolder import SkillHolder
-from ListSkill import ChangeColor,Freeze
+from SkillList import ChangeColor,Freeze
 
 
 class Ball:

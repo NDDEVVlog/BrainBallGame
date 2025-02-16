@@ -1,5 +1,5 @@
 from SceneManager import SceneManager
-from EEGGameUI import GameMenu
+from Scene_EEGMainMenu import GameMenu
 from Scene_Game import Scene_Game
 
 if __name__ == "__main__":
