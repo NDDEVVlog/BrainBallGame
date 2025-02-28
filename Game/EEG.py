@@ -147,8 +147,10 @@ class EEGDevice:
             gamma_power = np.sum(fft_values[(fft_freqs >= 30) & (fft_freqs < 50)])
 
             if (delta_power + theta_power) > 0:
-                self.attention_value = int((beta_power / (delta_power + theta_power)) * 100)
-                self.meditation_value = int((alpha_power+theta_power) / beta_power  ) * 100
+                epsilon = 1e-6  # Small constant to prevent division by zero
+
+                self.attention_value = int((beta_power / (delta_power + theta_power + epsilon)) * 100)
+                self.meditation_value = int(((alpha_power + theta_power) / (beta_power + epsilon)) * 100)
 
             # Store values in history for 5-second averaging
             self.attention_history.append(self.attention_value)
