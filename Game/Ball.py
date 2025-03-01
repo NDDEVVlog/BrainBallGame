@@ -31,40 +31,41 @@ class Ball:
     def move(self, keys):
         if self.isFrozen:
             return  # Prevent movement when frozen
+
         if keys[self.controls['left']]:
             self.velocity[0] = -BALL_SPEED
         elif keys[self.controls['right']]:
             self.velocity[0] = BALL_SPEED
         else:
             self.velocity[0] = 0
-        
-        # if keys[self.controls['up']]:
-        #     self.velocity[1] = -BALL_SPEED
-        # elif keys[self.controls['down']]:
-        #     self.velocity[1] = BALL_SPEED
-        # else:
-        #     self.velocity[1] = 0
 
         self.rect.move_ip(self.velocity)
-        
-    def move_based_on_focus(self, meditation_value, attention_value,reverse_movement:bool):
-        if self.isFrozen:
-            print("is being Froozen")
-            return  # Prevent movement when frozen
-        if meditation_value > attention_value:
-            direction = -1 if reverse_movement else 1
-            
-            
-            self.velocity[0] = BALL_SPEED * direction
-        else:
-            direction = -1 if reverse_movement else 1
-            self.velocity[0] = BALL_SPEED * direction *- 1  # Stop moving if attention is higher
 
-        self.rect.move_ip(self.velocity)
-        
-        # **Clamp to screen bounds**
+        # Clamp the position to keep the ball inside the screen
         self.rect.left = max(0, self.rect.left)
         self.rect.right = min(SCREEN_WIDTH, self.rect.right)
+        self.rect.top = max(0, self.rect.top)
+        self.rect.bottom = min(SCREEN_HEIGHT, self.rect.bottom)
+
+    def move_based_on_focus(self, meditation_value, attention_value, reverse_movement: bool):
+        if self.isFrozen:
+            print("is being Frozen")
+            return  # Prevent movement when frozen
+
+        if meditation_value > attention_value:
+            direction = -1 if reverse_movement else 1
+            self.velocity[0] = BALL_SPEED * direction
+        else:
+            self.velocity[0] = 0  # Stop moving if attention is higher
+
+        self.rect.move_ip(self.velocity)
+
+        # Clamp to screen bounds
+        self.rect.left = max(0, self.rect.left)
+        self.rect.right = min(SCREEN_WIDTH, self.rect.right)
+        self.rect.top = max(0, self.rect.top)
+        self.rect.bottom = min(SCREEN_HEIGHT, self.rect.bottom)
+
         
 
     def draw(self, screen):

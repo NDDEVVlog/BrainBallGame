@@ -146,7 +146,7 @@ class EEGDevice:
             beta_power = np.sum(fft_values[(fft_freqs >= 13) & (fft_freqs < 30)])
             gamma_power = np.sum(fft_values[(fft_freqs >= 30) & (fft_freqs < 50)])
 
-            if (delta_power + theta_power) > 0:
+            if (delta_power + theta_power) > 0 and beta_power >0:
                 self.attention_value = int((beta_power / (delta_power + theta_power)) * 100)
                 self.meditation_value = int((alpha_power+theta_power) / beta_power  ) * 100
 
